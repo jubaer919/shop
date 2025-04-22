@@ -8,3 +8,7 @@ exports.getHome = (req, res, next) => {
 exports.getSignUp = (req, res, next) => {
   res.render("singup", { title: "Sign Up" });
 };
+
+exports.postSignUp = (req, res, next) => {
+  const { email, password, confirmPassword } = req.body;
+};
