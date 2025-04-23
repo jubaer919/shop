@@ -1,9 +1,11 @@
 const express = require("express");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
+const csrf = require("csurf");
 
 const getDB = require("./db/database");
 const authRoutes = require("./router/authRouter");
+const csrfProtection = csrf();
 
 const app = express();
 
@@ -22,9 +24,12 @@ app.use(
   })
 );
 
+app.use(csrfProtection);
+
 app.use(async (req, res, next) => {
   req.user = req.session.user;
   res.locals.isAuthenticated = req.session.isLoggedIn || false;
+  res.locals.csrfToken = req.csrfToken();
   next();
 });
 

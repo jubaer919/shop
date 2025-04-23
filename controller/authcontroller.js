@@ -73,8 +73,11 @@ exports.postLogIn = async (req, res, next) => {
     req.session.user = user;
     req.session.isLoggedIn = true;
 
-    return res.status(200).render("home", {
-      title: "Home",
+    req.session.save((err) => {
+      if (err) {
+        res.redirect("/login");
+      }
+      res.redirect("/");
     });
   } else {
     return res.status(400).render("login", {
@@ -83,4 +86,9 @@ exports.postLogIn = async (req, res, next) => {
       errorMessage: "Wrong Password",
     });
   }
+};
+
+exports.postLogOut = async (req, res, next) => {
+  req.session.isLoggedIn = false;
+  return res.redirect("/");
 };
