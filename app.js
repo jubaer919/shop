@@ -7,6 +7,9 @@ const path = require("path");
 const getDB = require("./db/database");
 const authRoutes = require("./router/authRouter");
 const csrfProtection = csrf();
+const productRoutes = require("./router/productRouter");
+const cartRoutes = require("./router/cartRouter");
+const User = require("./models/user");
 
 const app = express();
 
@@ -29,13 +32,19 @@ app.use(
 app.use(csrfProtection);
 
 app.use(async (req, res, next) => {
-  req.user = req.session.user;
+  const user = await User.findById(req.session.userId);
+  req.user = user;
   res.locals.isAuthenticated = req.session.isLoggedIn || false;
   res.locals.csrfToken = req.csrfToken();
   next();
 });
 
 app.use(authRoutes);
+app.use(productRoutes);
+app.use(cartRoutes);
+app.use((req, res, next) => {
+  res.render("404");
+});
 
 const mongoConnect = async () => {
   await getDB();

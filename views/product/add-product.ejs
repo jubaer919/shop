@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= product._id ? 'Edit Product' : 'Add Product' %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <%- include('../partials/_header') %>
+    <div class="container">
+      <div class="error-message">
+        <h2><%= errorMessage %></h2>
+      </div>
+
+      <form
+        action="<%= product._id? '/edit-product' : '/add-product' %>"
+        method="POST"
+        class="form"
+        novalidate
+      >
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            value="<%= product.name || oldInput.name || '' %>"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="image">Image</label>
+          <input
+            type="text"
+            name="image"
+            id="image"
+            value="<%= product.image || oldInput.image || '' %>"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input
+            type="text"
+            name="price"
+            id="price"
+            value="<%= product.price || oldInput.price || '' %>"
+          />
+        </div>
+
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <input type="hidden" name="prodId" value="<%= product._id %>" />
+        <button type="submit">
+          <%= product._id ? 'Update Product' : 'Add Product' %>
+        </button>
+      </form>
+    </div>
+  </body>
+</html>
