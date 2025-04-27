@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= pageTitle %></title>
+</head>
+<body>
+
+  <%- include('../partials/_header') %>
+
+  
+  <h1>Your Orders</h1>
+
+  <% if (orders.length > 0) { %>
+    <% orders.forEach(order => { %>
+      <div style="margin-bottom: 2rem; padding: 1rem; border: 1px solid #ccc;">
+        <h2>Order ID: <%= order._id %></h2>
+        <ul>
+          <% order.products.forEach(prod => { %>
+            <li>
+              <strong><%= prod.product.title %></strong> — 
+              Quantity: <%= prod.quantity %> — 
+              Price: $<%= prod.product.price.toFixed(2) %>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <p>No orders found!</p>
+  <% } %>
+
+</body>
+</html>

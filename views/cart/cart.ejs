@@ -37,6 +37,10 @@
           <%= cartItems.reduce((acc, item) => acc + (item.productId.price * item.quantity), 0).toFixed(2) %>
         </h2>
       </div>
+      <form action="/order" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <button type="submit">Order Now</button>
+      </form>
     <% } %>
   </div>
 </body>
