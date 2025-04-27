@@ -1,12 +1,37 @@
 const express = require("express");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const csrf = require("csurf");
 
 const getDB = require("./db/database");
 const authRoutes = require("./router/authRouter");
+const csrfProtection = csrf();
 
 const app = express();
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
+
+app.use(
+  session({
+    secret: "my secret",
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl:
+        "mongodb+srv://jubaerdiu:bLUyFmpQpCfbJfQ4@cluster0.kfnx6.mongodb.net/test",
+    }),
+  })
+);
+
+app.use(csrfProtection);
+
+app.use(async (req, res, next) => {
+  req.user = req.session.user;
+  res.locals.isAuthenticated = req.session.isLoggedIn || false;
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
 
 app.use(authRoutes);
 
