@@ -2,6 +2,7 @@ const express = require("express");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const csrf = require("csurf");
+const path = require("path");
 
 const getDB = require("./db/database");
 const authRoutes = require("./router/authRouter");
@@ -11,6 +12,7 @@ const app = express();
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   session({
