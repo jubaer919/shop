@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <%- include('../partials/_header') %>
+    <% if (products.length === 0) { %>
+    <h1>There is no Product here</h1>
+    <% } else { %>
+      <div class="container">
+        <div class="products">
+          <% products.forEach(product => { %>
+            <div class="product">
+              <h2 class="product-heading"><%= product.name %></h2>
+              <div class="img-container">
+                <img src="<%= product.image %>" alt="<%= product.name %>" class="product-img">
+              </div>
+              <h2 class="product-price"><%= product.price %></h2>
+              <a href="/edit-product/<%= product._id %>" class="btn-edit">Edit Product</a>
+              <form action="/delete-product" method="POST">
+                <input type="hidden" name="prodId" value="<%= product._id %>">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <button type="submit">Delete</button>
+              </form>
+              <form action="/cart" method="POST">
+                <input type="hidden" name="prodId" value="<%= product._id %>">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <button type="submit">Add To Cart</button>
+              </form>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    <% } %>
+  </body>
+</html>

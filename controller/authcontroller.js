@@ -93,7 +93,7 @@ exports.postLogIn = async (req, res, next) => {
   const doMatch = await bcrypt.compare(password, user.password);
 
   if (doMatch) {
-    req.session.user = user;
+    req.session.userId = user._id;
     req.session.isLoggedIn = true;
 
     req.session.save((err) => {

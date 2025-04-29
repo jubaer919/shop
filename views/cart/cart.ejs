@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('../partials/_header') %>
+
+  <div class="container">
+    <h1>Your Cart</h1>
+
+    <% if (cartItems.length === 0) { %>
+      <p>Your cart is empty 🛒</p>
+    <% } else { %>
+      <ul class="cart-list">
+        <% cartItems.forEach(item => { %>
+          <li class="cart-item">
+            <h2><%= item.productId.name %></h2>
+            <p>Price: $<%= item.productId.price %></p>
+            <p>Quantity: <%= item.quantity %></p>
+            <p>Total: $<%= (item.productId.price * item.quantity).toFixed(2) %></p>
+
+            <form action="/cart-delete-item" method="POST">
+              <input type="hidden" name="prodId" value="<%= item.productId._id %>">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <button type="submit">Remove</button>
+            </form>
+          </li>
+        <% }) %>
+      </ul>
+
+      <div class="cart-summary">
+        <h2>
+          Total Amount: $
+          <%= cartItems.reduce((acc, item) => acc + (item.productId.price * item.quantity), 0).toFixed(2) %>
+        </h2>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>
